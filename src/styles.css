@@ -72,6 +72,12 @@ body {
   width: 100%;
 }
 
+.header-title-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .app-header h1 {
   margin: 0 0 6px;
   letter-spacing: -0.04em;
@@ -87,9 +93,15 @@ body {
 .header-controls {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.header-utilities {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .header-buttons {
@@ -163,6 +175,20 @@ button.secondary {
   padding: 4px 10px;
   font-size: 11px;
   box-shadow: none;
+}
+
+.theme-toggle {
+  padding: 6px 10px;
+  border-radius: 999px;
+  min-width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-icon {
+  font-size: 15px;
+  line-height: 1;
 }
 
 .app-light button.secondary {

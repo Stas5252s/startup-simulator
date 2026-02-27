@@ -23,6 +23,17 @@ function App() {
     applyInitialSettings,
   } = useGameEngine();
 
+  // Restore saved theme preference
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem("startup-simulator-theme");
+      if (savedTheme === "light") setIsDark(false);
+      if (savedTheme === "dark") setIsDark(true);
+    } catch {
+      // ignore
+    }
+  }, []);
+
   // Hide setup modal if a saved game already exists
   useEffect(() => {
     try {
@@ -35,7 +46,19 @@ function App() {
     }
   }, []);
 
-  const toggleTheme = () => setIsDark((d) => !d);
+  const toggleTheme = () =>
+    setIsDark((d) => {
+      const next = !d;
+      try {
+        localStorage.setItem(
+          "startup-simulator-theme",
+          next ? "dark" : "light"
+        );
+      } catch {
+        // ignore
+      }
+      return next;
+    });
 
   const rootClass = isDark ? "app app-dark" : "app app-light";
 
@@ -43,33 +66,41 @@ function App() {
     <div className={rootClass}>
       <header className="app-header">
         <div className="header-main">
-          <div>
+          <div className="header-title-row">
             <h1>{t("app.title")}</h1>
             <p className="subtitle">{t("app.subtitle")}</p>
           </div>
           <div className="header-controls">
-            <div className="lang-switcher">
-              <span className="lang-label">{t("app.languageLabel")}:</span>
-              <div className="lang-pills">
-                {languages.map((opt) => (
-                  <button
-                    key={opt.code}
-                    type="button"
-                    className={
-                      "secondary pill" +
-                      (opt.code === language ? " pill-active" : "")
-                    }
-                    onClick={() => setLanguage(opt.code)}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
+            <div className="header-utilities">
+              <div className="lang-switcher">
+                <span className="lang-label">{t("app.languageLabel")}:</span>
+                <div className="lang-pills">
+                  {languages.map((opt) => (
+                    <button
+                      key={opt.code}
+                      type="button"
+                      className={
+                        "secondary pill" +
+                        (opt.code === language ? " pill-active" : "")
+                      }
+                      onClick={() => setLanguage(opt.code)}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
               </div>
+              <button
+                type="button"
+                className="secondary theme-toggle"
+                onClick={toggleTheme}
+                aria-label={isDark ? t("app.themeLight") : t("app.themeDark")}
+                title={isDark ? t("app.themeLight") : t("app.themeDark")}
+              >
+                <span className="theme-icon">{isDark ? "☾" : "☀︎"}</span>
+              </button>
             </div>
             <div className="header-buttons">
-              <button className="secondary" onClick={toggleTheme}>
-                {isDark ? t("app.themeLight") : t("app.themeDark")}
-              </button>
               <button
                 className="secondary"
                 onClick={() => setShowSettings(true)}
