@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard.jsx";
 import DecisionPanel from "./components/DecisionPanel.jsx";
 import EventModal from "./components/EventModal.jsx";
@@ -22,6 +22,18 @@ function App() {
     resetGame,
     applyInitialSettings,
   } = useGameEngine();
+
+  // Hide setup modal if a saved game already exists
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("startup-simulator-state-v1");
+      if (saved) {
+        setShowSettings(false);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
   const toggleTheme = () => setIsDark((d) => !d);
 
