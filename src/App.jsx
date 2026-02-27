@@ -23,16 +23,12 @@ function App() {
     applyInitialSettings,
   } = useGameEngine();
 
-  // Restore saved theme + hint preferences
+  // Restore saved theme preference
   useEffect(() => {
     try {
       const savedTheme = localStorage.getItem("startup-simulator-theme");
       if (savedTheme === "light") setIsDark(false);
       if (savedTheme === "dark") setIsDark(true);
-      const hideHints = localStorage.getItem("startup-simulator-hide-hints");
-      if (hideHints === "true") {
-        setShowHints(false);
-      }
     } catch {
       // ignore
     }
@@ -77,18 +73,22 @@ function App() {
           <div className="header-controls">
             <div className="header-utilities">
               <div className="lang-switcher">
-                <span className="lang-label">{t("app.languageLabel")}</span>
-                <select
-                  className="lang-select"
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
-                >
+                <span className="lang-label">{t("app.languageLabel")}:</span>
+                <div className="lang-pills">
                   {languages.map((opt) => (
-                    <option key={opt.code} value={opt.code}>
+                    <button
+                      key={opt.code}
+                      type="button"
+                      className={
+                        "secondary pill" +
+                        (opt.code === language ? " pill-active" : "")
+                      }
+                      onClick={() => setLanguage(opt.code)}
+                    >
                       {opt.label}
-                    </option>
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
               <button
                 type="button"
@@ -97,13 +97,7 @@ function App() {
                 aria-label={isDark ? t("app.themeLight") : t("app.themeDark")}
                 title={isDark ? t("app.themeLight") : t("app.themeDark")}
               >
-                <span className="theme-icon">
-                  {isDark ? (
-                    <i className="fa-solid fa-moon" aria-hidden="true" />
-                  ) : (
-                    <i className="fa-solid fa-sun" aria-hidden="true" />
-                  )}
-                </span>
+                <span className="theme-icon">{isDark ? "☾" : "☀︎"}</span>
               </button>
             </div>
             <div className="header-buttons">
@@ -121,49 +115,30 @@ function App() {
         </div>
       </header>
 
-      {showHints && (
-        <div className="hint-row">
-          <div className="hint-card">
-            <div className="hint-header">
-              <div>
-                <div className="hint-title">{t("hints.title")}</div>
-              </div>
-              <div className="hint-actions">
-                <button
-                  type="button"
-                  className="secondary small-ghost"
-                  onClick={() => setShowHints((v) => !v)}
-                >
-                  {t("hints.hide")}
-                </button>
-                <button
-                  type="button"
-                  className="secondary small-ghost"
-                  onClick={() => {
-                    setShowHints(false);
-                    try {
-                      localStorage.setItem(
-                        "startup-simulator-hide-hints",
-                        "true"
-                      );
-                    } catch {
-                      // ignore
-                    }
-                  }}
-                >
-                  ×
-                </button>
-              </div>
+      <div className="hint-row">
+        <div className="hint-card">
+          <div className="hint-header">
+            <div>
+              <div className="hint-title">{t("hints.title")}</div>
             </div>
+            <button
+              type="button"
+              className="secondary small-ghost"
+              onClick={() => setShowHints((v) => !v)}
+            >
+              {showHints ? t("hints.hide") : t("hints.show")}
+            </button>
+          </div>
+          {showHints && (
             <div className="hint-body">
               <p>{t("hints.step1")}</p>
               <p>{t("hints.step2")}</p>
               <p>{t("hints.step3")}</p>
               <p className="muted small">{t("hints.tip")}</p>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
 
       {showSettings && (
         <div className="modal-backdrop">
@@ -201,8 +176,6 @@ function App() {
         <EventModal
           event={state.currentEvent}
           onClose={() => dispatch({ type: "RESOLVE_EVENT" })}
-          onAcceptOffer={() => dispatch({ type: "ACCEPT_OFFER" })}
-          onRejectOffer={() => dispatch({ type: "REJECT_OFFER" })}
         />
       )}
 
