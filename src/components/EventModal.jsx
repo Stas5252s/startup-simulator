@@ -1,7 +1,7 @@
 import React from "react";
 import { useI18n } from "../i18n/I18nProvider.jsx";
 
-export default function EventModal({ event, onClose }) {
+export default function EventModal({ event, onClose, onAcceptOffer, onRejectOffer }) {
   const { t } = useI18n();
 
   if (!event) return null;
@@ -35,9 +35,29 @@ export default function EventModal({ event, onClose }) {
             />
           )}
         </div>
-        <div className="modal-actions">
-          <button onClick={onClose}>{t("events.labels.continue")}</button>
-        </div>
+        {event.acquisitionOffer ? (
+          <div className="modal-actions split">
+            <button
+              onClick={() => {
+                onAcceptOffer?.();
+              }}
+            >
+              {t("decisions.actions.investment.title")}
+            </button>
+            <button
+              className="secondary"
+              onClick={() => {
+                onRejectOffer?.();
+              }}
+            >
+              {t("events.labels.continue")}
+            </button>
+          </div>
+        ) : (
+          <div className="modal-actions">
+            <button onClick={onClose}>{t("events.labels.continue")}</button>
+          </div>
+        )}
       </div>
     </div>
   );

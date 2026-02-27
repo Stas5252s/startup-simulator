@@ -43,8 +43,8 @@ export function calculateEconomy(state) {
   );
 
   // Expenses: employees, base ops, marketing
-  const employeeCost = employees * 10_000;
-  const baseOps = 15_000;
+  const employeeCost = employees * 8_000; // slightly cheaper to prolong game
+  const baseOps = 12_000;
   const marketingCost = marketingInvestment;
 
   let expenses = employeeCost + baseOps + marketingCost;

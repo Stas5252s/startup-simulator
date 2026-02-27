@@ -48,6 +48,12 @@ export default function DecisionPanel({ disabled, onDecision }) {
             {t("decisions.actions.launchFeature.caption")}
           </span>
         </button>
+        <button onClick={makeHandler("rnd")} disabled={disabled}>
+          {t("decisions.actions.rnd.title")}
+          <span className="btn-caption">
+            {t("decisions.actions.rnd.caption")}
+          </span>
+        </button>
       </div>
     </div>
   );

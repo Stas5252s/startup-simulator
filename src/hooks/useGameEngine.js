@@ -287,6 +287,17 @@ function reducer(state, action) {
           };
           break;
         }
+        case "rnd": {
+          const cost = 25_000;
+          if (state.cash < cost) return state;
+          const qualityDelta = getRandomInt(8, 16);
+          changes = {
+            cash: state.cash - cost,
+            productQuality: Math.min(100, state.productQuality + qualityDelta),
+            founderEnergy: Math.max(0, state.founderEnergy - 4),
+          };
+          break;
+        }
         default:
           return state;
       }
@@ -300,6 +311,44 @@ function reducer(state, action) {
       return {
         ...state,
         currentEvent: null,
+      };
+    }
+    case "ACCEPT_OFFER": {
+      if (!state.currentEvent?.acquisitionOffer) return state;
+      const offer = state.currentEvent.acquisitionOffer;
+      if (offer.type === "acquisition") {
+        return {
+          ...state,
+          cash: state.cash + offer.cash,
+          isWin: true,
+          gameOverReasonKey: "gameOverReasons.acquisition",
+          gameOverParams: {
+            amount: (offer.cash / 1_000_000).toFixed(1),
+          },
+          currentEvent: null,
+          hasAcquisitionOffer: false,
+        };
+      }
+      // funding
+      return {
+        ...state,
+        cash: state.cash + offer.cash,
+        reputation: Math.min(100, state.reputation + 5),
+        founderEnergy: Math.max(0, state.founderEnergy - 3),
+        currentEvent: null,
+        hasAcquisitionOffer: false,
+      };
+    }
+    case "REJECT_OFFER": {
+      if (!state.currentEvent?.acquisitionOffer) return {
+        ...state,
+        currentEvent: null,
+        hasAcquisitionOffer: false,
+      };
+      return {
+        ...state,
+        currentEvent: null,
+        hasAcquisitionOffer: false,
       };
     }
     case "LOAD_STATE": {

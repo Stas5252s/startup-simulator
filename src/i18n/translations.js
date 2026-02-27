@@ -109,6 +109,10 @@ export const translations = {
           title: "Launch New Feature",
           caption: "Spend energy and cash to raise quality",
         },
+        rnd: {
+          title: "Invest in R&D",
+          caption: "Increase product quality for future growth",
+        },
       },
     },
     stats: {
@@ -294,6 +298,10 @@ export const translations = {
         launchFeature: {
           title: "Запустить фичу",
           caption: "Тратите энергию и кэш, повышаете качество",
+        },
+        rnd: {
+          title: "Инвестиции в R&D",
+          caption: "Повышаете качество продукта и будущий рост",
         },
       },
     },
@@ -481,6 +489,10 @@ export const translations = {
           title: "Neues Feature launchen",
           caption: "Mehr Aufwand und Cash, höhere Qualität",
         },
+        rnd: {
+          title: "In F&E investieren",
+          caption: "Steigert Produktqualität und zukünftiges Wachstum",
+        },
       },
     },
     stats: {
@@ -666,6 +678,10 @@ export const translations = {
         launchFeature: {
           title: "Lancer une nouvelle fonctionnalité",
           caption: "Coûte de l’énergie et du cash, améliore le produit",
+        },
+        rnd: {
+          title: "Investir en R&D",
+          caption: "Améliore la qualité produit et la croissance future",
         },
       },
     },
